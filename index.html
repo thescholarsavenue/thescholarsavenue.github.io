@@ -70,25 +70,18 @@
             <div id="links">
               <table width="100%" cellspacing="0" cellpadding="20px" border="0">
                 <tr>
-                  <td width="33%">
+                  <td width="50%">
                     <h1>
                       <img src="https://raw.githubusercontent.com/feathericons/feather/master/icons/user.svg" style="filter: invert(1) hue-rotate(180deg);" alt="Profile">
                       <br><br>
                       <span id="profilelink">Loading...</span>
                     </h1>
                   </td>
-                  <td width="33%">
+                  <td width="50%">
                     <h1>
                       <img src="https://raw.githubusercontent.com/feathericons/feather/master/icons/globe.svg" style="filter: invert(1) hue-rotate(180deg);" alt="Blog">
                       <br><br>
                       <span id="bloglink">Loading...</span>
-                    </h1>
-                  </td>
-                  <td width="33%">
-                    <h1>
-                      <img src="https://raw.githubusercontent.com/feathericons/feather/master/icons/file-text.svg" style="filter: invert(1) hue-rotate(180deg);" alt="Gists">
-                      <br><br>
-                      <span id="gistlink">Loading...</span>
                     </h1>
                   </td>
                 </tr>
@@ -100,7 +93,8 @@
     </div>
   </div>
   <script>
-    const username = 'thescholarsavenue'; // Change this to your own username
+    const username = location.hostname.split('.')[0];
+    console.log('username:', username);
 
     const getLastCommitDate = async identifier => {
       try {
@@ -134,7 +128,6 @@
         document.getElementById('titlelink').innerHTML = `<a href="#">${username}<span style="color: white;">.github.io</span></a>`;
         document.getElementById('profilelink').innerHTML = `<a href="https://github.com/${username}"><span style="color: white;">github.com/</span>${username}</a>`;
         document.getElementById('bloglink').innerHTML = `<a href="https://${info.blog}">${info.blog}</a>`;
-        document.getElementById('gistlink').innerHTML = `<a href="https://gist.github.com/${username}"><span style="color: white;">gist.github.com/</span>${username}</a>`;
 
         const res2 = await fetch(`https://api.github.com/users/${username}/repos`);
         const data = await res2.json();
@@ -147,7 +140,7 @@
         for (var item of reqrepos)
           if (item.name !== `${username}.github.io`)
             reqdiv.insertAdjacentHTML('beforeend', `
-              <h3><a href="https://${username}.github.io/${item.name}">/${item.name}</a></h3>
+              <h3><a href="${item.name}">/${item.name}</a></h3>
               ${item.description}<br>
               <a href="${item.html_url}"><i> - Last commit: ${dateString(item.date)}</a></i><br><br>
             `);
