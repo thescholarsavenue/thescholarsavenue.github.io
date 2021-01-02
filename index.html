@@ -129,8 +129,13 @@
         document.getElementById('profilelink').innerHTML = `<a href="https://github.com/${username}"><span style="color: white;">github.com/</span>${username}</a>`;
         document.getElementById('bloglink').innerHTML = `<a href="https://${info.blog}">${info.blog}</a>`;
 
-        const res2 = await fetch(`https://api.github.com/users/${username}/repos`);
-        const data = await res2.json();
+        const pageCount = Math.ceil(info.public_repos / 100);
+        var data = [];
+        for (var page = 1; page <= pageCount; page++) {
+          const res2 = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`);
+          const currentdata = await res2.json();
+          data.push(...currentdata);
+        };
         const repos = data.filter(item => item.has_pages);
         for (var item of repos)
           item.date = await getLastCommitDate(item.full_name);
